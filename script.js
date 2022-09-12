@@ -2,7 +2,6 @@
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
-// const { fetchProducts } = require('./helpers/fetchProducts');
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
@@ -65,7 +64,7 @@ callFunctionCP();
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
  */
-const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
+const getIdFromProductItem = (product) => product.querySelector('.item_id').innerText;
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -79,8 +78,24 @@ const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
+  // li.addEventListener('click', cartItemClickListener);
   return li;
 };
 
-window.onload = () => { };
+const setItemsCard = async (event) => {
+  const product = event.target.parentNode;
+  const idItem = getIdFromProductItem(product);
+  const { id, title, price } = await fetchItem(idItem);
+  const object = { id, title, price };
+  console.log(title);
+  const card = document.getElementsByClassName('cart__items');
+  const selectProd = createCartItemElement(object);
+  card[0].appendChild(selectProd);
+};
+
+window.onload = () => { 
+  const buttonProduct = document.querySelectorAll('.item__add');
+  for (let i = 0; i < buttonProduct.length; i += 1) {
+    buttonProduct[i].addEventListener('click', setItemsCard);
+  }
+};
