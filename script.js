@@ -74,9 +74,9 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
-const card = document.getElementsByClassName('cart__items');
+const cart = document.getElementsByClassName('cart__items');
 const cartItemClickListener = (event) => {
-  card[0].removeChild(event.target);
+  cart[0].removeChild(event.target);
 };
 
 const createCartItemElement = ({ id, title, price }) => {
@@ -93,7 +93,7 @@ const setItemsCart = async (event) => {
   const { id, title, price } = await fetchItem(idItem);
   const object = { id, title, price };
   const selectProd = createCartItemElement(object);
-  card[0].appendChild(selectProd);
+  cart[0].appendChild(selectProd);
 };
 
 window.onload = () => { 
