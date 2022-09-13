@@ -49,7 +49,7 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
-const callFunctionCP = async () => {
+const insertProducts = async () => {
   const dados = await fetchProducts('computador');
   const items = document.getElementsByClassName('items');
   for (let i = 0; i < dados.length; i += 1) {
@@ -57,7 +57,7 @@ const callFunctionCP = async () => {
     items[0].appendChild(section);
   }
 };
-callFunctionCP();
+insertProducts();
 
 /**
  * Função que recupera o ID do produto passado como parâmetro.
@@ -74,21 +74,24 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
+const card = document.getElementsByClassName('cart__items');
+const cartItemClickListener = (event) => {
+  card[0].removeChild(event.target);
+};
+
 const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  // li.addEventListener('click', cartItemClickListener);
+  li.addEventListener('click', cartItemClickListener);
   return li;
 };
 
-const setItemsCard = async (event) => {
+const setItemsCart = async (event) => {
   const product = event.target.parentNode;
   const idItem = getIdFromProductItem(product);
   const { id, title, price } = await fetchItem(idItem);
   const object = { id, title, price };
-  console.log(title);
-  const card = document.getElementsByClassName('cart__items');
   const selectProd = createCartItemElement(object);
   card[0].appendChild(selectProd);
 };
@@ -96,6 +99,6 @@ const setItemsCard = async (event) => {
 window.onload = () => { 
   const buttonProduct = document.querySelectorAll('.item__add');
   for (let i = 0; i < buttonProduct.length; i += 1) {
-    buttonProduct[i].addEventListener('click', setItemsCard);
+    buttonProduct[i].addEventListener('click', setItemsCart);
   }
 };
