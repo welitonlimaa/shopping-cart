@@ -89,7 +89,7 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
-
+const itemsCart = Array(0).fill(0);
 const setItemsCart = async (event) => {
   const product = event.target.parentNode;
   const idItem = getIdFromProductItem(product);
@@ -97,7 +97,8 @@ const setItemsCart = async (event) => {
   const object = { id, title, price };
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
-  saveCartItems(selectProd.innerText);
+  itemsCart.push(selectProd.innerText);
+  saveCartItems(itemsCart);
 };
 
 window.onload = () => {
