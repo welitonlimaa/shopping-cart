@@ -36,7 +36,7 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
-
+getSavedCartItems();
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -76,6 +76,7 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  */
 const cart = document.getElementsByClassName('cart__items');
 const cartItemClickListener = (event) => {
+  console.log(event.target);
   cart[0].removeChild(event.target);
 };
 
@@ -94,6 +95,7 @@ const setItemsCart = async (event) => {
   const object = { id, title, price };
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
+  saveCartItems(object);
 };
 
 window.onload = () => { 
