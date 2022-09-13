@@ -36,7 +36,7 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
-getSavedCartItems();
+
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -76,7 +76,10 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  */
 const cart = document.getElementsByClassName('cart__items');
 const cartItemClickListener = (event) => {
+  const dadoSaved = JSON.parse(localStorage.getItem('cartItems')) || 0;
+  const items = dadoSaved.filter((texto) => texto !== event.target.innerText);
   cart[0].removeChild(event.target);
+  localStorage.setItem('cartItems', JSON.stringify(items));
 };
 
 const createCartItemElement = ({ id, title, price }) => {
@@ -97,7 +100,8 @@ const setItemsCart = async (event) => {
   saveCartItems(selectProd.innerText);
 };
 
-window.onload = () => { 
+window.onload = () => {
+  getSavedCartItems(); 
   const buttonProduct = document.querySelectorAll('.item__add');
   for (let i = 0; i < buttonProduct.length; i += 1) {
     buttonProduct[i].addEventListener('click', setItemsCart);
