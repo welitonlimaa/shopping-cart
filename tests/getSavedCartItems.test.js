@@ -8,6 +8,10 @@ describe('4 - Teste a função getSavedCartItems', () => {
     expect.assertions(1);
     expect(typeof getSavedCartItems).toBe('function');
   });
+  it('Verifique se getSavedCartItems está retornando um array com produtos', () => {
+    expect.assertions(1);
+    expect(typeof getSavedCartItems()).toBe('object');
+  });
   it('Verifique se ao executar getSavedCartItems, o método localStorage.getItem é chamado', () => {
     expect.assertions(1);
     getSavedCartItems();

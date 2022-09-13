@@ -57,7 +57,6 @@ const insertProducts = async () => {
     items[0].appendChild(section);
   }
 };
-insertProducts();
 
 /**
  * Função que recupera o ID do produto passado como parâmetro.
@@ -74,10 +73,10 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
+const dados = getSavedCartItems();
 const cart = document.getElementsByClassName('cart__items');
 const cartItemClickListener = (event) => {
-  const dadoSaved = JSON.parse(localStorage.getItem('cartItems')) || 0;
-  const items = dadoSaved.filter((texto) => texto !== event.target.innerText);
+  const items = dados.filter((texto) => texto !== event.target.innerText);
   cart[0].removeChild(event.target);
   localStorage.setItem('cartItems', JSON.stringify(items));
 };
@@ -101,8 +100,18 @@ const setItemsCart = async (event) => {
   saveCartItems(JSON.stringify(itemsCart));
 };
 
-window.onload = () => {
-  getSavedCartItems(); 
+const savedsCartItems = () => {
+  for (let i = 0; i < dados.length; i += 1) {
+    const li = document.createElement('li');
+    li.addEventListener('click', cartItemClickListener);
+    li.innerText = dados[i];
+    cart[0].appendChild(li);
+  }
+};
+
+window.onload = async () => {
+  await insertProducts();
+  savedsCartItems(); 
   const buttonProduct = document.querySelectorAll('.item__add');
   for (let i = 0; i < buttonProduct.length; i += 1) {
     buttonProduct[i].addEventListener('click', setItemsCart);
