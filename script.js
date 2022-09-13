@@ -98,7 +98,7 @@ const setItemsCart = async (event) => {
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
   itemsCart.push(selectProd.innerText);
-  saveCartItems(itemsCart);
+  saveCartItems(JSON.stringify(itemsCart));
 };
 
 window.onload = () => {
