@@ -76,7 +76,6 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  */
 const cart = document.getElementsByClassName('cart__items');
 const cartItemClickListener = (event) => {
-  console.log(event.target);
   cart[0].removeChild(event.target);
 };
 
@@ -95,7 +94,7 @@ const setItemsCart = async (event) => {
   const object = { id, title, price };
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
-  saveCartItems(object);
+  saveCartItems(selectProd.innerText);
 };
 
 window.onload = () => { 

@@ -1,21 +1,18 @@
 const cartProducts = document.getElementsByClassName('cart__items');
-const cartItemSavedClickListener = (event) => {
+const cartSavedItemClickListener = (event) => {
+  const dadoSaved = JSON.parse(localStorage.getItem('cartItems')) || 0;
+  const items = dadoSaved.filter((texto) => texto !== event.target.innerText);
   cartProducts[0].removeChild(event.target);
-};
-
-const createSavedCartItemElement = ({ id, title, price }) => {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemSavedClickListener);
-  return li;
+  localStorage.setItem('cartItems', JSON.stringify(items));
 };
 
 const getSavedCartItems = () => {
   const dados = JSON.parse(localStorage.getItem('cartItems')) || 0;
   for (let i = 0; i < dados.length; i += 1) {
-    const selectProd = createSavedCartItemElement(dados[i]);
-    cartProducts[0].appendChild(selectProd);
+    const li = document.createElement('li');
+    li.addEventListener('click', cartSavedItemClickListener);
+    li.innerText = dados[i];
+    cartProducts[0].appendChild(li);
   }
 };
 
