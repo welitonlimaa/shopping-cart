@@ -3,12 +3,6 @@ const saveCartItems = require('../helpers/saveCartItems');
 
 localStorageSimulator('setItem');
 
-afterEach(() => {
-  const dados = JSON.parse(localStorage.getItem('cartItems'));
-  dados.splice(0, dados.length - 1);
-  localStorage.setItem('cartItems', JSON.stringify(dados));
-});
-
 describe('3 - Teste a função saveCartItems', () => {
   it('Verifique se saveCartItems é uma função.', () => {
     expect.assertions(1);
@@ -18,14 +12,18 @@ describe('3 - Teste a função saveCartItems', () => {
     expect.assertions(1);
     cartItem = {};
     saveCartItems(cartItem);
-    const dados = JSON.parse(localStorage.getItem('cartItems')) || 0;
-    expect(dados).not.toBe(0);
+    expect(localStorage.setItem).toHaveBeenCalled();
   });
-  it('Verifique se ao executar saveCartItems com um cartItem como argumento, o método localStorage.setItem é chamado', () => {
+  it('Verifique se ao executar saveCartItems com um cartItem como argumento, o método localStorage.setItem é chamado com dois parâmetros', () => {
     expect.assertions(1);
     cartItem = {};
     saveCartItems(cartItem);
-    const dados = JSON.parse(localStorage.getItem('cartItems'));
-    expect(dados).toContain(cartItem);
+    expect(localStorage.setItem).toHaveBeenCalledWith('cartItems', JSON.stringify(cartItem));
   });
 });
+
+// afterEach(() => {
+//   const dados = JSON.parse(localStorage.getItem('cartItems'));
+//   dados.splice(0, dados.length - 1);
+//   localStorage.setItem('cartItems', JSON.stringify(dados));
+// });
