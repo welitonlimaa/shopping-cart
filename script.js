@@ -107,11 +107,13 @@ const createCartItemElement = ({ id, title, price }) => {
 const pTotal = document.getElementsByClassName('total-price');
 pTotal[0].innerText = 0;
 
-const sumItemsCart = async (idItem) => {
-  let soma = await Number(pTotal[0].innerText);
-  const { price } = await fetchItem(idItem);
-  soma += Number(price);
-  pTotal[0].innerText = soma;
+const sumItemsCart = async (price) => {
+  let soma = pTotal[0].innerText;
+  soma = parseFloat(soma);
+  // const num = /\d+/g;
+  // let number = soma.match(num);
+  soma += parseFloat(price);
+  pTotal[0].innerText = soma.toFixed(1);
 };
 
 const setItemsCart = async (event) => {
@@ -122,7 +124,7 @@ const setItemsCart = async (event) => {
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
   saveCart();
-  sumItemsCart(id);
+  sumItemsCart(price);
 };
 
 const savedsCartItems = () => {
@@ -142,6 +144,4 @@ window.onload = async () => {
   for (let i = 0; i < buttonProduct.length; i += 1) {
     buttonProduct[i].addEventListener('click', setItemsCart);
   }
-  // const soma = document.getElementsByClassName('total-price');
-  // soma[0].innerText = 0;
 };
