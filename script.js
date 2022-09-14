@@ -73,12 +73,27 @@ const getIdFromProductItem = (product) => product.querySelector('.item_id').inne
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
-const dados = getSavedCartItems();
+let dados = getSavedCartItems() || 0;
+
+if (dados === [] || dados === undefined) {
+  localStorage.setItem('cartItems', []);
+}
+
 const cart = document.getElementsByClassName('cart__items');
+
+const saveCart = () => {
+  const itemsArray = Array(0).fill(0);
+  localStorage.clear();
+  const products = cart[0].childNodes;
+  for (let i = 0; i < products.length; i += 1) {
+    itemsArray.push(products[i].innerText);
+  }
+  saveCartItems(JSON.stringify(itemsArray));
+};
+
 const cartItemClickListener = (event) => {
-  const items = dados.filter((texto) => texto !== event.target.innerText);
   cart[0].removeChild(event.target);
-  localStorage.setItem('cartItems', JSON.stringify(items));
+  saveCart();
 };
 
 const createCartItemElement = ({ id, title, price }) => {
@@ -88,7 +103,7 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
-const itemsCart = Array(0).fill(0);
+
 const setItemsCart = async (event) => {
   const product = event.target.parentNode;
   const idItem = getIdFromProductItem(product);
@@ -96,11 +111,11 @@ const setItemsCart = async (event) => {
   const object = { id, title, price };
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
-  itemsCart.push(selectProd.innerText);
-  saveCartItems(JSON.stringify(itemsCart));
+  saveCart();
 };
 
 const savedsCartItems = () => {
+  dados = JSON.parse(dados);
   for (let i = 0; i < dados.length; i += 1) {
     const li = document.createElement('li');
     li.addEventListener('click', cartItemClickListener);
