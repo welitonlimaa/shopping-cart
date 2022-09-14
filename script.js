@@ -104,6 +104,16 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
+const pTotal = document.getElementsByClassName('total-price');
+pTotal[0].innerText = 0;
+
+const sumItemsCart = async (idItem) => {
+  let soma = await Number(pTotal[0].innerText);
+  const { price } = await fetchItem(idItem);
+  soma += Number(price);
+  pTotal[0].innerText = soma;
+};
+
 const setItemsCart = async (event) => {
   const product = event.target.parentNode;
   const idItem = getIdFromProductItem(product);
@@ -112,6 +122,7 @@ const setItemsCart = async (event) => {
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
   saveCart();
+  sumItemsCart(id);
 };
 
 const savedsCartItems = () => {
@@ -131,4 +142,6 @@ window.onload = async () => {
   for (let i = 0; i < buttonProduct.length; i += 1) {
     buttonProduct[i].addEventListener('click', setItemsCart);
   }
+  // const soma = document.getElementsByClassName('total-price');
+  // soma[0].innerText = 0;
 };
