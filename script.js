@@ -45,13 +45,11 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
   return section;
 };
-
+const items = document.getElementsByClassName('items');
 const insertProducts = async () => {
   const dados = await fetchProducts('computador');
-  const items = document.getElementsByClassName('items');
   for (let i = 0; i < dados.length; i += 1) {
     const section = createProductItemElement(dados[i]);
     items[0].appendChild(section);
@@ -150,7 +148,11 @@ const emptyCart = () => {
 };
 
 window.onload = async () => {
+  const p = document.createElement('p');
+  p.innerText = 'Carregando...';
+  items[0].appendChild(p);
   await insertProducts();
+  items[0].removeChild(p);
   savedsCartItems(); 
   const buttonProduct = document.querySelectorAll('.item__add');
   for (let i = 0; i < buttonProduct.length; i += 1) {
