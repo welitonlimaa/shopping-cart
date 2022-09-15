@@ -4,11 +4,12 @@ const fetchProducts = async (QUERY) => {
     const response = await fetch(url);
     const results = await response.json();
     const dados = results.results.map((infos) => {
-      const { id, title, thumbnail } = infos;
+      const { id, title, thumbnail, price } = infos;
       return {
         id,
         title,
         thumbnail,
+        price,
       };
     });
     return dados;
