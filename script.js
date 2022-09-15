@@ -143,6 +143,12 @@ const savedsCartItems = () => {
   }
 };
 
+const emptyCart = () => {
+  cart[0].innerHTML = '';
+  saveCart();
+  sumItemsCart();
+};
+
 window.onload = async () => {
   await insertProducts();
   savedsCartItems(); 
@@ -150,4 +156,6 @@ window.onload = async () => {
   for (let i = 0; i < buttonProduct.length; i += 1) {
     buttonProduct[i].addEventListener('click', setItemsCart);
   }
+  const buttonEmptyCart = document.querySelector('.empty-cart');
+  buttonEmptyCart.addEventListener('click', emptyCart);
 };
