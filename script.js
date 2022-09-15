@@ -47,7 +47,14 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
   return section;
 };
+
 const items = document.getElementsByClassName('items');
+
+const p = document.createElement('p');
+p.className = 'loading';
+p.innerText = 'carregando...';
+items[0].appendChild(p);
+
 const insertProducts = async () => {
   const dados = await fetchProducts('computador');
   for (let i = 0; i < dados.length; i += 1) {
@@ -148,9 +155,6 @@ const emptyCart = () => {
 };
 
 window.onload = async () => {
-  const p = document.createElement('p');
-  p.innerText = 'Carregando...';
-  items[0].appendChild(p);
   await insertProducts();
   items[0].removeChild(p);
   savedsCartItems(); 
