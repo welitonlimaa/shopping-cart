@@ -91,9 +91,27 @@ const saveCart = () => {
   saveCartItems(JSON.stringify(itemsArray));
 };
 
+const pTotal = document.getElementsByClassName('total-price');
+pTotal[0].innerText = localStorage.getItem('sumCart');
+
+const sumItemsCart = async () => {
+  const products = cart[0].childNodes;
+  soma = 0;
+  if (products.length === 0) {
+    pTotal[0].innerText = 0;
+  }
+  for (let i = 0; i < products.length; i += 1) {
+    const number = products[i].innerText.split('$');
+    soma += Number(number[1]);
+    pTotal[0].innerText = soma;
+  }
+  localStorage.setItem('sumCart', JSON.stringify(soma));
+};
+
 const cartItemClickListener = (event) => {
   cart[0].removeChild(event.target);
   saveCart();
+  sumItemsCart();
 };
 
 const createCartItemElement = ({ id, title, price }) => {
@@ -104,18 +122,6 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
-const pTotal = document.getElementsByClassName('total-price');
-pTotal[0].innerText = 0;
-
-const sumItemsCart = async (price) => {
-  let soma = pTotal[0].innerText;
-  soma = parseFloat(soma);
-  // const num = /\d+/g;
-  // let number = soma.match(num);
-  soma += parseFloat(price);
-  pTotal[0].innerText = soma.toFixed(1);
-};
-
 const setItemsCart = async (event) => {
   const product = event.target.parentNode;
   const idItem = getIdFromProductItem(product);
@@ -124,7 +130,7 @@ const setItemsCart = async (event) => {
   const selectProd = createCartItemElement(object);
   cart[0].appendChild(selectProd);
   saveCart();
-  sumItemsCart(price);
+  sumItemsCart();
 };
 
 const savedsCartItems = () => {
