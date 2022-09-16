@@ -45,7 +45,7 @@ const createProductItemElement = ({ id, title, thumbnail, price }) => {
   sectionInfos.appendChild(createCustomElement('span', 'item_id', id));
   sectionInfos.appendChild(createProductImageElement(thumbnail));
   sectionInfos.appendChild(createCustomElement('span', 'item__title', title));
-  sectionInfos.appendChild(createCustomElement('p', 'item__price',
+  sectionInfos.appendChild(createCustomElement('p', 'item__price estiloVal',
    `${price.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}`));
   section.appendChild(sectionInfos);
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
@@ -101,27 +101,33 @@ const saveCart = () => {
 };
 
 const pTotal = document.getElementsByClassName('total-price');
-pTotal[0].innerText = `Subtotal: ${Number(localStorage.getItem('sumCart'))
-  .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}`;
+pTotal[0].innerHTML = `<span class="estiloPrice"> Subtotal: </span> <span class="estiloVal"> 
+  ${Number(localStorage.getItem('sumCart'))
+  .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </span>`;
 
 const sumItemsCart = async () => {
   const products = cart[0].childNodes;
-  soma = 0;
+  let soma = 0;
+  // const num = /\d+/g;
   if (products.length === 0) {
-    pTotal[0].innerText = `Subtotal: ${0
-      .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}`;
+    pTotal[0].innerHTML = `<span class="estiloPrice"> Subtotal: </span> <span class="estiloVal"> 
+    ${0
+      .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </span>`;
   }
   for (let i = 0; i < products.length; i += 1) {
-    const number = products[i].innerText.split('$');
-    soma += Number(number[1]);
-    pTotal[0].innerText = `Subtotal: ${soma
-      .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}`;
+    const numberString = products[i].innerText.split('$');
+    const number = numberString[1].split('\n');
+    soma += Number(number[0]);
+    pTotal[0].innerHTML = `<span class="estiloPrice"> Subtotal: </span> <span class="estiloVal">
+     ${soma
+      .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} </span>`;
   }
   localStorage.setItem('sumCart', JSON.stringify(soma));
 };
 
 const cartItemClickListener = (event) => {
-  cart[0].removeChild(event.target);
+  const pai = event.target.parentNode;
+  cart[0].removeChild(pai);
   saveCart();
   sumItemsCart();
 };
@@ -132,12 +138,17 @@ const createCartItemElement = ({ id, title, price, thumbnail }) => {
   const img = document.createElement('img');
   img.className = 'imageCart';
   img.src = thumbnail;
+  const icon = document.createElement('i');
+  icon.className = 'material-icons';
+  icon.innerText = 'delete';
+  icon.style = 'color: red; padding-left: 10px; font-size: 20px';
+  icon.addEventListener('click', cartItemClickListener);
   const infos = document.createElement('p');
   infos.className = 'cart_title';
-  infos.innerText = `ID: ${id} | ${title} | PREÇO: R$${price}`;
+  infos.innerHTML = `<span> ${title} </span> <br><br> <span class="estilo"> R$${price} </span>`;
   li.appendChild(img);
   li.appendChild(infos);
-  li.addEventListener('click', cartItemClickListener);
+  li.appendChild(icon);
   return li;
 };
 
@@ -169,6 +180,22 @@ const emptyCart = () => {
   sumItemsCart();
 };
 
+const noneCart = (event) => {
+  const icon = event.target;
+  const fullCart = document.querySelector('.cart');
+  const myCart = document.querySelector('.container-cartTitle');
+  const cartNone = document.querySelectorAll('.none');
+  if (cartNone.length !== 0) {
+    fullCart.classList.remove('none');
+    icon.style = 'font-size:45px;color:white';
+    myCart.classList.remove('none');
+  } else {
+    fullCart.classList.add('none');
+    icon.style = 'font-size:45px;color:white;padding-right: 20px';
+    myCart.classList.add('none');
+  }
+};
+
 window.onload = async () => {
   await insertProducts();
   items[0].removeChild(p);
@@ -179,4 +206,7 @@ window.onload = async () => {
   }
   const buttonEmptyCart = document.querySelector('.empty-cart');
   buttonEmptyCart.addEventListener('click', emptyCart);
+
+  const iconCart = document.querySelector('.material-icons');
+  iconCart.addEventListener('click', noneCart);
 };
