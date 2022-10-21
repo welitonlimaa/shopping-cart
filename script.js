@@ -59,8 +59,8 @@ p.className = 'loading';
 p.innerText = 'carregando...';
 items[0].appendChild(p);
 
-const insertProducts = async () => {
-  const dados = await fetchProducts('computador');
+const insertProducts = async (product) => {
+  const dados = await fetchProducts(product);
   for (let i = 0; i < dados.length; i += 1) {
     const section = createProductItemElement(dados[i]);
     items[0].appendChild(section);
@@ -140,8 +140,8 @@ const createCartItemElement = ({ id, title, price, thumbnail }) => {
   img.src = thumbnail;
   const icon = document.createElement('i');
   icon.className = 'material-icons';
-  icon.innerText = 'delete';
-  icon.style = 'color: red; padding-left: 10px; font-size: 20px';
+  icon.innerText = 'clear';
+  icon.style = 'color: red; padding-left: 15px; font-size: 15px; font-weight: 600';
   icon.addEventListener('click', cartItemClickListener);
   const infos = document.createElement('p');
   infos.className = 'cart_title';
@@ -196,10 +196,26 @@ const noneCart = (event) => {
   }
 };
 
-window.onload = async () => {
-  await insertProducts();
+const capSearch = async () => {
+  items[0].innerHTML = '';
+  p.className = 'loading';
+  p.innerText = 'carregando...';
+  items[0].appendChild(p);
+  const inputSearch = document.getElementById('inputProduct').value;
+  await insertProducts(inputSearch);
+  const buttonProduct = document.querySelectorAll('.item__add');
+  for (let i = 0; i < buttonProduct.length; i += 1) {
+    buttonProduct[i].addEventListener('click', setItemsCart);
+  }
   items[0].removeChild(p);
-  savedsCartItems(); 
+}; 
+
+window.onload = async () => {
+  await insertProducts('computador');
+  items[0].removeChild(p);
+  savedsCartItems();
+  const buttonSearch = document.querySelector('#searchB');
+  buttonSearch.addEventListener('click', capSearch); 
   const buttonProduct = document.querySelectorAll('.item__add');
   for (let i = 0; i < buttonProduct.length; i += 1) {
     buttonProduct[i].addEventListener('click', setItemsCart);
