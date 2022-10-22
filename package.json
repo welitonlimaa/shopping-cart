@@ -1,31 +1,17 @@
 {
-  "name": "sd-0x-project-shopping-cart",
+  "name": "shopping-cart",
   "version": "1.0.0",
-  "description": "Você já usa o GitHub diariamente para desenvolver os exercícios, certo? Agora, para desenvolver os projetos, você deverá seguir as instruções a seguir. Fique atento a cada passo, e se tiver qualquer dúvida, nos envie por _Slack_! #vqv 🚀",
   "main": "script.js",
+  "homepage": "https://welitonlimaa.github.io/shopping-cart",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "jest --watchAll",
     "test:coverage": "jest --coverage",
     "cy": "cypress run",
     "cy:open": "cypress open --e2e --browser chrome",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js",
     "lint:styles": "stylelint *.css --config .stylelintrc.json --ignore-disables --allow-empty-input"
-  },
-  "jest": {
-    "coverageReporters": [
-      "text",
-      "html"
-    ],
-    "collectCoverageFrom": [
-      "**/helpers/**"
-    ],
-    "testMatch": [
-      "**/tests/**/*.test.js?(x)"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/betrybe/sd-0x-project-shopping-cart.git"
   },
   "author": "",
   "license": "ISC",
@@ -35,7 +21,6 @@
   "engines": {
     "node": "16"
   },
-  "homepage": "https://github.com/betrybe/sd-0x-project-shopping-cart#readme",
   "dependencies": {
     "cypress": "10.6.0",
     "cypress-multi-reporters": "1.6.1",
@@ -47,5 +32,8 @@
     "mochawesome-report-generator": "6.2.0",
     "stylelint": "14.11.0",
     "stylelint-config-standard": "28.0.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
