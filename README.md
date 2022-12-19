@@ -8,7 +8,7 @@ Link de acesso à aplicação: https://welitonlimaa.github.io/shopping-cart
 </details>
 <details>
   <summary><strong>:memo: Habilidades Envolvidas </strong></summary><br />
-- Requisições e consumo de dados vindos de uma `API`;
+- Requisições e consumo de dados vindos de uma `API`
 
 - Manipulação do DOM com JavaScript 
 
